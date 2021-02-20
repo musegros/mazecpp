@@ -10,4 +10,6 @@ advised by Dr. Andrew Berns
 
 
 
-<b>Objective</b>: To create an app that can solve mazes using various solving algorithms and analyze the memory/time usage of those algorithms.
+<b>Objective</b>: To teach myself a new language (C++) and strengthen my understanding of OOP concepts.
+
+<b>How?</b> By creating an app that can solve mazes using various solving algorithms and analyze the memory/time usage of those algorithms.
