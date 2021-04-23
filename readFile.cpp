@@ -18,22 +18,17 @@ typedef struct Branch {
 } Branch;
 
 string printSolution(Branch* branch, string solution) {
-	
 	string branchMoves = branch->movesMade;
-	PRINT("branchMoves", branchMoves);
-	PRINT("solution", solution);
 	solution = branchMoves + solution;
-//	PRINT("solution", solution);
 	if (branch->prevBranch == NULL) {
+		PRINT("solution", solution);
 		return solution;
 	}
 	else return printSolution (branch->prevBranch, solution);
-	
 }
 
 string findMoves (vector<string> maze, int row, int col) {
 	string moves;
-
 	if (maze[row+1][col] == ' ') {
 		moves.append("D");
 	}
@@ -51,7 +46,6 @@ string findMoves (vector<string> maze, int row, int col) {
 
 void updatePosition(Branch* branch) {
 	char lastMove = branch->movesMade[branch->movesMade.size()-1];
-
 	if (lastMove == 'D') {
 		branch->row++;
 	}
@@ -75,7 +69,7 @@ int main() {
 	string nextMoves = "";
 	string line;
 	Branch startBranch;
-	Branch currentBranch;
+	Branch* currentBranch;
 	
 	while (getline(in, line)) {
 		maze.push_back(line);
@@ -83,7 +77,7 @@ int main() {
 
 	//assumes square maze
 	int mazeSize = maze[0].size();
-	
+
 	//With start always at the top, first move into maze will always be down
 	startBranch.firstMove = 'D';
 	startBranch.movesMade = "";
@@ -96,39 +90,33 @@ int main() {
 			startBranch.col = i;
 		}
 	}
-
 	queue.push_back(&startBranch);
 
 	while (queue.size() != 0) {
-		currentBranch = *queue[0];
+		currentBranch = queue[0];
 		queue.erase(queue.begin());
-
-		nextMoves = currentBranch.firstMove;
+		nextMoves = currentBranch->firstMove;
 
 		while (nextMoves.length() == 1) {
-			currentBranch.movesMade.append(nextMoves);
+			currentBranch->movesMade.append(nextMoves);
 			//sealing off last position so findMoves() doesn't count it as a possible move
-			maze[currentBranch.row][currentBranch.col] = '#';
-			updatePosition(&currentBranch);
-			if (currentBranch.row == mazeSize-1 || currentBranch.col == mazeSize-1) {
-				printSolution(&currentBranch, "");
+			maze[currentBranch->row][currentBranch->col] = '#';
+			updatePosition(currentBranch);
+			if (currentBranch->row == mazeSize-1 || currentBranch->col == mazeSize-1) {
+				printSolution(currentBranch, "");
 				break;
 			} 
-			
-			nextMoves = findMoves(maze, currentBranch.row, currentBranch.col);
-		
+			nextMoves = findMoves(maze, currentBranch->row, currentBranch->col);
 		}
 
 		for (int i = 0; i < nextMoves.size(); i++) {
 			Branch* newBranch = new Branch;
-			newBranch->prevBranch = &currentBranch;
-			newBranch->row = currentBranch.row;
-			newBranch->col = currentBranch.col;
+			newBranch->prevBranch = currentBranch;
+			newBranch->row = currentBranch->row;
+			newBranch->col = currentBranch->col;
 			newBranch->firstMove = nextMoves[i];
 			newBranch->movesMade = "";
 			queue.push_back(newBranch);
 		}
-
 	}
-	cout << "Queue empty" << endl;
 }
