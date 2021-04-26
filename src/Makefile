@@ -8,13 +8,19 @@ DEPS = $(patsubst %, $(IDIR)/%, $(_DEPS))
 _OBJ = main.o Branch.o
 OBJ = $(patsubst %, $(BDIR)/%, $(_OBJ))
 
-$(BDIR)/%.o: %.cpp $(DEPS)
-	$(CC) -c -o $@ $< 
-
 maze: $(OBJ)
 	$(CC) -o $@ $^
+
+$(OBJ): | $(BDIR)
+
+$(BDIR):
+	mkdir -p ../build
+
+$(BDIR)/%.o: %.cpp $(DEPS)
+	$(CC) -c -o $@ $< 
 
 .PHONY: clean
 
 clean:
 		rm -f $(BDIR)/*.o
+		rm maze
