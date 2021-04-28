@@ -2,10 +2,10 @@ CC = g++
 IDIR = ../include
 BDIR = ../build
 
-_DEPS = Branch.h
+_DEPS = Branch.h Maze.h
 DEPS = $(patsubst %, $(IDIR)/%, $(_DEPS))
 
-_OBJ = main.o Branch.o
+_OBJ = main.o Branch.o Maze.o
 OBJ = $(patsubst %, $(BDIR)/%, $(_OBJ))
 
 maze: $(OBJ)

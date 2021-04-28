@@ -3,58 +3,34 @@
 #include <string>
 #include <fstream>
 #include "../include/Branch.h"
+#include "../include/Maze.h"
 
 using namespace std;
 
 #define PRINT(STR, VAR) \
 	cout << STR " = " << VAR << endl
 
-string findMoves (vector<string> maze, int row, int col) {
-	string moves;
-	if (maze[row+1][col] == ' ') {
-		moves.append("D");
-	}
-	if (maze[row-1][col] == ' ') {
-		moves.append("U");
-	}
-	if (maze[row][col+1] == ' ') {
-		moves.append("R");
-	}
-	if (maze[row][col-1] == ' ') {
-		moves.append("L");
-	}
-	return moves;
-}
-
-int main() {
-	ifstream in ("../mazes/mazeSmall.txt");
+int main(int argc, char *argv[]) {
+	Maze maze(argv[1]);
 	vector<Branch*> queue;
-	vector<string> maze;
-	string line;
 	string nextMoves = "";
 	Branch* startBranch;
 	
-	while (getline(in, line)) {
-		maze.push_back(line);
+	if (argc != 2) {
+		cout << "Program needs one argument, and that argument must be a file." << endl;
+		return 0;
 	}
 
-	//assumes square maze
-	int mazeSize = maze[0].size();
-
 	//find index of start location. only checks top of maze
-	for (int i = 1; i < mazeSize-1; i++) {
-		if (maze[0][i] == ' ') {
+	for (int i = 1; i < maze.getWidth()-1; i++) {
+		if (maze.getChar(0, i) == ' ') {
 			startBranch = new Branch(0, i);
 		}
-		else if (maze[i][0] == ' ') {
+		else if (maze.getChar(i, 0) == ' ') {
 			startBranch = new Branch(i, 0);
 		}
 	}
 	queue.push_back(startBranch);
-
-	for (int i = 0; i < mazeSize; i++) {
-		cout << maze[i] << endl;
-	}
 
 	while (queue.size() != 0) {
 		Branch* currentBranch = queue[0];
@@ -66,18 +42,17 @@ int main() {
 		int* col = &pos[1];
 
 		while (nextMoves.length() == 1) {
-
 			currentBranch->addMove(nextMoves);
 			//sealing off last position so findMoves() doesn't count it as a possible move
-			maze[*row][*col] = '*';
+			maze.setChar(*row,*col);
 			currentBranch->updatePosition();
 			currentBranch->getPos(pos);
-			if (*row == mazeSize-1 || *col == mazeSize-1) {
+			if (*row == maze.getHeight()-1 || *col == maze.getWidth()-1) {
 				string solution = currentBranch->printSolution();
 				cout << solution << endl;;
 				return 0;
 			} 
-			nextMoves = findMoves(maze, *row, *col);
+			nextMoves = maze.findMoves(*row, *col);
 		}
 
 		for (int i = 0; i < nextMoves.size(); i++) {
