@@ -16,4 +16,4 @@ advised by Dr. Andrew Berns
 
 ## Setup/Run:
 
-run `make maze` in the src directory, then ./maze
+run `make` in the src directory, then ./maze

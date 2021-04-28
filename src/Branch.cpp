@@ -2,17 +2,38 @@
 #include <string>
 #include "../include/Branch.h"
 
-Branch::Branch(Branch* branch) {
+Branch::Branch(Branch* branch, char initMove) {
 	row = branch->row;
 	col = branch->col;
 	prevBranch = branch;
 	movesMade = "";
+	firstMove = initMove;
 }
 
-Branch::Branch(char initChar) {
-	firstMove = initChar;
+Branch::Branch(int initRow, int initCol) {
+	row = initRow;
+	col = initCol;
+	if (col == 0) {
+		firstMove = 'R';
+	}
+	if (row == 0) {
+		firstMove = 'D';
+	}
 	movesMade = "";
 	prevBranch = NULL;
+}
+
+char Branch::getFirstMove() {
+	return firstMove;
+}
+
+void Branch::getPos(int* posArray) {
+	posArray[0] = row;
+	posArray[1] = col;
+}
+
+void Branch::addMove(std::string moveToAdd) {
+	movesMade.append(moveToAdd);
 }
 
 void Branch::printBranch() {

@@ -32,6 +32,7 @@ int main() {
 	vector<string> maze;
 	string line;
 	string nextMoves = "";
+	Branch* startBranch;
 	
 	while (getline(in, line)) {
 		maze.push_back(line);
@@ -40,14 +41,13 @@ int main() {
 	//assumes square maze
 	int mazeSize = maze[0].size();
 
-	//With start always at the top, first move into maze will always be down
-	Branch* startBranch = new Branch('D');
-	startBranch->row = 0;
-
 	//find index of start location. only checks top of maze
-	for (int i = 0; i < mazeSize; i++) {
+	for (int i = 1; i < mazeSize-1; i++) {
 		if (maze[0][i] == ' ') {
-			startBranch->col = i;
+			startBranch = new Branch(0, i);
+		}
+		else if (maze[i][0] == ' ') {
+			startBranch = new Branch(i, 0);
 		}
 	}
 	queue.push_back(startBranch);
@@ -59,25 +59,29 @@ int main() {
 	while (queue.size() != 0) {
 		Branch* currentBranch = queue[0];
 		queue.erase(queue.begin());
-		nextMoves = currentBranch->firstMove;
+		nextMoves = currentBranch->getFirstMove();
+		int pos[2];
+		currentBranch->getPos(pos);
+		int* row = &pos[0];
+		int* col = &pos[1];
 
 		while (nextMoves.length() == 1) {
 
-			currentBranch->movesMade.append(nextMoves);
+			currentBranch->addMove(nextMoves);
 			//sealing off last position so findMoves() doesn't count it as a possible move
-			maze[currentBranch->row][currentBranch->col] = '*';
+			maze[*row][*col] = '*';
 			currentBranch->updatePosition();
-			if (currentBranch->row == mazeSize-1 || currentBranch->col == mazeSize-1) {
+			currentBranch->getPos(pos);
+			if (*row == mazeSize-1 || *col == mazeSize-1) {
 				string solution = currentBranch->printSolution();
 				cout << solution << endl;;
 				return 0;
 			} 
-			nextMoves = findMoves(maze, currentBranch->row, currentBranch->col);
+			nextMoves = findMoves(maze, *row, *col);
 		}
 
 		for (int i = 0; i < nextMoves.size(); i++) {
-			Branch* newBranch = new Branch(currentBranch);
-			newBranch->firstMove = nextMoves[i];
+			Branch* newBranch = new Branch(currentBranch, nextMoves[i]);
 			queue.push_back(newBranch);
 		}
 	}
