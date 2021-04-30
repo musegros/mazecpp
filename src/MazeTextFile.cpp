@@ -2,9 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include "../include/Maze.h"
+#include "../include/MazeTextFile.h"
 
-Maze::Maze(std::string fileName) {
+MazeTextFile::MazeTextFile(std::string fileName) {
 		mazeFile = fileName;
 		std::ifstream in (mazeFile);
 		std::string line;
@@ -16,29 +16,32 @@ Maze::Maze(std::string fileName) {
 		width = mazeVector[0].size();
 };
 
-void Maze::printMaze() {
+void MazeTextFile::printMaze() {
 	for (int i = 0; i < height; i++) {
 		std::cout << mazeVector[i] << std::endl;
 	}
 }
 
-void Maze::setChar(int row, int col) {
-	mazeVector[row][col] = '*';
+void MazeTextFile::setChar(int row, int col, char inputChar) {
+	mazeVector[row][col] = inputChar;
 }
 
-char Maze::getChar(int row, int col) {
+char MazeTextFile::getChar(int row, int col) {
 	return mazeVector[row][col];
 }
 
-int Maze::getHeight() {
+int MazeTextFile::getHeight() {
 	return height;
 }
 
-int Maze::getWidth() {
+int MazeTextFile::getWidth() {
 	return width;
 }
 
-std::string Maze::findMoves (int row, int col) {
+std::string MazeTextFile::findMoves (int row, int col) {
+	//currently this function returns string of valid moves
+	//but maybe it should only return chars of the maze and let
+	//caller figure out what that means
 	std::string moves;
 	if (mazeVector[row+1][col] == ' ') {
 		moves.append("D");
@@ -53,4 +56,14 @@ std::string Maze::findMoves (int row, int col) {
 		moves.append("L");
 	}
 	return moves;
+}
+
+bool MazeTextFile::isFinished(int* pos) {
+	int row = pos[0];
+	int col = pos[1];
+	if (row == height-1 || col == width-1) {
+		return true;
+	} else {
+		return false;
+	}
 }

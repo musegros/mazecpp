@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 #include "../include/Branch.h"
-#include "../include/Maze.h"
+#include "../include/MazeTextFile.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ using namespace std;
 	cout << STR " = " << VAR << endl
 
 int main(int argc, char *argv[]) {
-	Maze maze(argv[1]);
+	MazeTextFile maze(argv[1]);
 	vector<Branch*> queue;
 	string nextMoves = "";
 	Branch* startBranch;
@@ -44,10 +44,10 @@ int main(int argc, char *argv[]) {
 		while (nextMoves.length() == 1) {
 			currentBranch->addMove(nextMoves);
 			//sealing off last position so findMoves() doesn't count it as a possible move
-			maze.setChar(*row,*col);
+			maze.setChar(*row,*col,'*');
 			currentBranch->updatePosition();
 			currentBranch->getPos(pos);
-			if (*row == maze.getHeight()-1 || *col == maze.getWidth()-1) {
+			if (maze.isFinished(pos)) {
 				string solution = currentBranch->printSolution();
 				cout << solution << endl;;
 				return 0;
