@@ -22,5 +22,5 @@ $(BDIR)/%.o: %.cpp $(DEPS)
 .PHONY: clean
 
 clean:
-		rm -f $(BDIR)/*.o
+		rm -rf $(BDIR)/*.o
 		rm maze
