@@ -5,7 +5,6 @@
 class MazeTextFile: public Maze {
 public:
 	MazeTextFile(std::string);
-	void printMaze();
 	void setChar(int, int, char);
 	char getChar(int, int);
 	int getHeight();
@@ -18,5 +17,5 @@ private:
 	int width;
 	std::vector<std::string> mazeVector;
 	
-}
+};
 #endif

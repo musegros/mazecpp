@@ -11,7 +11,6 @@ using namespace std;
 	cout << STR " = " << VAR << endl
 
 int main(int argc, char *argv[]) {
-	MazeTextFile maze(argv[1]);
 	vector<Branch*> queue;
 	string nextMoves = "";
 	Branch* startBranch;
@@ -20,6 +19,8 @@ int main(int argc, char *argv[]) {
 		cout << "Program needs one argument, and that argument must be a file." << endl;
 		return 0;
 	}
+
+	MazeTextFile maze(argv[1]);
 
 	//find index of start location. only checks top of maze
 	for (int i = 1; i < maze.getWidth()-1; i++) {

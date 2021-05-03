@@ -5,7 +5,7 @@
 #include "../include/MazeTextFile.h"
 
 MazeTextFile::MazeTextFile(std::string fileName) {
-		mazeFile = fileName;
+		std::string mazeFile = fileName;
 		std::ifstream in (mazeFile);
 		std::string line;
 
@@ -15,12 +15,6 @@ MazeTextFile::MazeTextFile(std::string fileName) {
 		height = mazeVector.size();
 		width = mazeVector[0].size();
 };
-
-void MazeTextFile::printMaze() {
-	for (int i = 0; i < height; i++) {
-		std::cout << mazeVector[i] << std::endl;
-	}
-}
 
 void MazeTextFile::setChar(int row, int col, char inputChar) {
 	mazeVector[row][col] = inputChar;
