@@ -2,10 +2,10 @@ CC = g++
 IDIR = ../include
 BDIR = ../build
 
-_DEPS = Branch.h
+_DEPS = Branch.h Maze.h MazeTextFile.h
 DEPS = $(patsubst %, $(IDIR)/%, $(_DEPS))
 
-_OBJ = main.o Branch.o
+_OBJ = main.o Branch.o MazeTextFile.o
 OBJ = $(patsubst %, $(BDIR)/%, $(_OBJ))
 
 maze: $(OBJ)
@@ -17,10 +17,10 @@ $(BDIR):
 	mkdir -p ../build
 
 $(BDIR)/%.o: %.cpp $(DEPS)
-	$(CC) -c -o $@ $< 
+	$(CC) -g -c -o $@ $< 
 
 .PHONY: clean
 
 clean:
-		rm -rf $(BDIR)/*.o
+		rm -rf $(BDIR)
 		rm maze

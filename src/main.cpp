@@ -3,31 +3,14 @@
 #include <string>
 #include <fstream>
 #include "../include/Branch.h"
+#include "../include/MazeTextFile.h"
 
 using namespace std;
 
 #define PRINT(STR, VAR) \
 	cout << STR " = " << VAR << endl
 
-string findMoves (vector<string> maze, int row, int col) {
-	string moves;
-	if (maze[row+1][col] == ' ') {
-		moves.append("D");
-	}
-	if (maze[row-1][col] == ' ') {
-		moves.append("U");
-	}
-	if (maze[row][col+1] == ' ') {
-		moves.append("R");
-	}
-	if (maze[row][col-1] == ' ') {
-		moves.append("L");
-	}
-	return moves;
-}
-
-int main() {
-	ifstream in ("../mazes/mazeSmall.txt");
+int main(int argc, char *argv[]) {
 	vector<Branch*> queue;
 	vector<string> maze;
 	string line;
@@ -38,8 +21,7 @@ int main() {
 		maze.push_back(line);
 	}
 
-	//assumes square maze
-	int mazeSize = maze[0].size();
+	MazeTextFile maze(argv[1]);
 
 	//find index of start location. only checks top of maze
 	for (int i = 1; i < mazeSize-1; i++) {
@@ -69,10 +51,10 @@ int main() {
 
 			currentBranch->addMove(nextMoves);
 			//sealing off last position so findMoves() doesn't count it as a possible move
-			maze[*row][*col] = '*';
+			maze.setChar(*row,*col,'*');
 			currentBranch->updatePosition();
 			currentBranch->getPos(pos);
-			if (*row == mazeSize-1 || *col == mazeSize-1) {
+			if (maze.isFinished(pos)) {
 				string solution = currentBranch->printSolution();
 				cout << solution << endl;;
 				return 0;
