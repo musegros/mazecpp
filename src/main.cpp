@@ -12,31 +12,26 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	vector<Branch*> queue;
-	vector<string> maze;
-	string line;
 	string nextMoves = "";
 	Branch* startBranch;
 	
-	while (getline(in, line)) {
-		maze.push_back(line);
+
+	if (argc != 2) {
+		cout << "Program needs one argument, and that argument must be a text file." << endl;
 	}
 
 	MazeTextFile maze(argv[1]);
 
 	//find index of start location. only checks top of maze
-	for (int i = 1; i < mazeSize-1; i++) {
-		if (maze[0][i] == ' ') {
+	for (int i = 1; i < maze.getWidth()-1; i++) {
+		if (maze.getChar(0, i) == ' ') {
 			startBranch = new Branch(0, i);
 		}
-		else if (maze[i][0] == ' ') {
+		else if (maze.getChar(i, 0) == ' ') {
 			startBranch = new Branch(i, 0);
 		}
 	}
 	queue.push_back(startBranch);
-
-	for (int i = 0; i < mazeSize; i++) {
-		cout << maze[i] << endl;
-	}
 
 	while (queue.size() != 0) {
 		Branch* currentBranch = queue[0];
@@ -59,7 +54,7 @@ int main(int argc, char *argv[]) {
 				cout << solution << endl;;
 				return 0;
 			} 
-			nextMoves = findMoves(maze, *row, *col);
+			nextMoves = maze.findMoves(*row, *col);
 		}
 
 		for (int i = 0; i < nextMoves.size(); i++) {
