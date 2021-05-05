@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <stack>
 #include "../include/Branch.h"
 #include "../include/MazeTextFile.h"
 
