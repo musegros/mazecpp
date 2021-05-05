@@ -14,13 +14,14 @@ int main(int argc, char *argv[]) {
 	vector<Branch*> queue;
 	string nextMoves = "";
 	Branch* startBranch;
-	
 
-	if (argc != 2) {
-		cout << "Program needs one argument, and that argument must be a text file." << endl;
+	if (argc != 3) {
+		cout << "Program expects a maze file and either a 'b' or a 'd'" << endl;
+		return 0;
 	}
 
 	MazeTextFile maze(argv[1]);
+	char searchFlag = argv[2][0];
 
 	//find index of start location. only checks top of maze
 	for (int i = 1; i < maze.getWidth()-1; i++) {
@@ -34,8 +35,15 @@ int main(int argc, char *argv[]) {
 	queue.push_back(startBranch);
 
 	while (queue.size() != 0) {
-		Branch* currentBranch = queue[0];
-		queue.erase(queue.begin());
+		Branch* currentBranch;
+		if (searchFlag == 'b') {
+			currentBranch = queue[0];
+			queue.erase(queue.begin());
+		} else {
+			currentBranch = queue.back();
+			queue.pop_back();
+		}
+
 		nextMoves = currentBranch->getFirstMove();
 		int pos[2];
 		currentBranch->getPos(pos);
