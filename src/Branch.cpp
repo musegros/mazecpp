@@ -8,6 +8,7 @@ Branch::Branch(Branch* branch, char initMove) {
 	prevBranch = branch;
 	movesMade = "";
 	firstMove = initMove;
+	movesMade =  branch->movesMade;
 }
 
 Branch::Branch(int initRow, int initCol) {
@@ -43,11 +44,7 @@ void Branch::printBranch() {
 }
 
 std::string Branch::printSolution(std::string solution) {
-	solution = movesMade + solution;
-	if (prevBranch == NULL) {
-		return solution;
-	}
-	else return prevBranch->printSolution(solution);
+	return movesMade;
 }
 
 void Branch::updatePosition() {
