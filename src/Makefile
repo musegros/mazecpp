@@ -8,7 +8,7 @@ DEPS = $(patsubst %, $(IDIR)/%, $(_DEPS))
 _OBJ = main.o Branch.o MazeTextFile.o
 OBJ = $(patsubst %, $(BDIR)/%, $(_OBJ))
 
-maze: $(OBJ)
+runMaze: $(OBJ)
 	$(CC) -o $@ $^
 
 $(OBJ): | $(BDIR)
@@ -23,4 +23,4 @@ $(BDIR)/%.o: %.cpp $(DEPS)
 
 clean:
 		rm -rf $(BDIR)
-		rm maze
+		rm runMaze
