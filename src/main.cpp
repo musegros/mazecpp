@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <stack>
+#include <deque>
 #include "../include/Branch.h"
 #include "../include/MazeTextFile.h"
 
@@ -12,7 +13,7 @@ using namespace std;
 	cout << STR " = " << VAR << endl
 
 int main(int argc, char *argv[]) {
-	vector<Branch*> queue;
+	stack<Branch*> branchStack;
 	string nextMoves = "";
 	Branch* startBranch;
 
@@ -33,18 +34,11 @@ int main(int argc, char *argv[]) {
 			startBranch = new Branch(i, 0);
 		}
 	}
-	queue.push_back(startBranch);
+	branchStack.push(startBranch);
 
-	while (queue.size() != 0) {
-		Branch* currentBranch;
-		if (searchFlag == 'b') {
-			currentBranch = queue[0];
-			queue.erase(queue.begin());
-		} else {
-			currentBranch = queue.back();
-			queue.pop_back();
-		}
-
+	while (branchStack.size() != 0) {
+		Branch* currentBranch = branchStack.top();
+		branchStack.pop();
 		nextMoves = currentBranch->getFirstMove();
 		int pos[2];
 		currentBranch->getPos(pos);
@@ -68,7 +62,7 @@ int main(int argc, char *argv[]) {
 
 		for (int i = 0; i < nextMoves.size(); i++) {
 			Branch* newBranch = new Branch(currentBranch, nextMoves[i]);
-			queue.push_back(newBranch);
+			branchStack.push(newBranch);
 		}
 	}
 }
