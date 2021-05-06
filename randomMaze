@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo Generating maze
-python3 ~/repos/PyMaze/pymaze.py -width $1 -height $2 -out mazes/$1x$2maze.txt
+python3 ~/repos/PyMaze/pymaze.py -width $1 -height $2 -out mazes/$1x$2.txt
 echo Maze generated
 
 echo Solving maze
