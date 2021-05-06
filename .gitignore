@@ -1,4 +1,4 @@
 build
-src/maze
+src/runMaze
 *.swp
 solution.txt
