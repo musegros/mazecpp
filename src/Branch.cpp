@@ -19,12 +19,21 @@ Branch::Branch(int initRow, int initCol) {
 	if (row == 0) {
 		firstMove = 'D';
 	}
+	direction = firstMove;
 	movesMade = "";
 	prevBranch = NULL;
 }
 
 char Branch::getFirstMove() {
 	return firstMove;
+}
+
+char getDirection() {
+	return direction;
+}
+
+char setDirection(char newDirection) {
+	direction = newDirection;
 }
 
 void Branch::getPos(int* posArray) {

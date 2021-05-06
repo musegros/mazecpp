@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <queue>
 #include <stack>
 #include "../include/Branch.h"
 #include "../include/MazeTextFile.h"
@@ -10,9 +11,13 @@ using namespace std;
 
 #define PRINT(STR, VAR) \
 	cout << STR " = " << VAR << endl
+struct CompareHeuristic {
+	bool operator()(Branch* b1, Branch* b2) {
+		return b1->getHeuristic() > b2->getHeuristic();
+	}
+};
 
 int main(int argc, char *argv[]) {
-	vector<Branch*> queue;
 	string nextMoves = "";
 	Branch* startBranch;
 
@@ -55,15 +60,16 @@ int main(int argc, char *argv[]) {
 
 			currentBranch->addMove(nextMoves);
 			//sealing off last position so findMoves() doesn't count it as a possible move
-			maze.setChar(*row,*col,'*');
+			//maze.setChar(*row,*col,'*');
 			currentBranch->updatePosition();
 			currentBranch->getPos(pos);
 			if (maze.isFinished(pos)) {
 				string solution = currentBranch->printSolution();
-				cout << solution << endl;;
+				cout << solution << endl;
 				return 0;
 			} 
 			nextMoves = maze.findMoves(*row, *col);
+			nextMoves =  
 		}
 
 		for (int i = 0; i < nextMoves.size(); i++) {
