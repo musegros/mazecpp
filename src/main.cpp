@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 			currentBranch->getPos(pos);
 			if (maze.isFinished(pos)) {
 				string solution = currentBranch->printSolution();
-				cout << solution << endl;;
+				cout << solution.size() << endl;
 				return 0;
 			} 
 			nextMoves = maze.findMoves(*row, *col);
